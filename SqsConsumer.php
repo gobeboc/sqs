@@ -196,11 +196,8 @@ class SqsConsumer implements Consumer
             $message->setRedelivered(((int) $sqsMessage['Attributes']['ApproximateReceiveCount']) > 1);
         }
 
-        if (isset($sqsMessage['MessageAttributes']['Headers'])) {
-            $headers = json_decode($sqsMessage['MessageAttributes']['Headers']['StringValue'], true);
-
-            $message->setHeaders($headers[0]);
-            $message->setProperties($headers[1]);
+        if (isset($sqsMessage['MessageAttributes'])) {
+            $message->setHeaders($sqsMessage['MessageAttributes']);
         }
 
         return $message;
